@@ -1,0 +1,15 @@
+{
+    "name": "blocker",
+    "version": "1.0",
+    "description": "Build an Extension!",
+    "permissions": ["webRequest",
+                    "webRequestBlocking"],
+    "background": {
+        "scripts": ["block.js"],
+        "persistent": true
+    },
+    "page_action": {
+        "default_popup": "block.html"
+    },
+    "manifest_version": 2
+}
