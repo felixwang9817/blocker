@@ -28,6 +28,7 @@ function countdown() {
 }
 
 function updateCurrentPage(){
+    // TODO: figure out why this doesn't update properly
 	chrome.tabs.query({
 		active: true,
 		lastFocusedWindow: true
