@@ -7,7 +7,7 @@
                     "webRequestBlocking", 
                     "<all_urls>"],
     "background": {
-        "scripts": ["block.js"],
+        "scripts": ["background.js"],
         "persistent": true
     },
     "browser_action": {
