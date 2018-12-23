@@ -28,7 +28,6 @@ function countdown() {
 }
 
 function updateCurrentPage(){
-    // TODO: figure out why this doesn't update properly
 	chrome.tabs.query({
 		active: true,
 		lastFocusedWindow: true
@@ -50,7 +49,7 @@ function updateCurrentTime(){
 }
 
 function recordPages(){
-	let elapsed_time = (Date.now() - current_page_start_time) / 1000;
+	let elapsed_time = Math.round((Date.now() - current_page_start_time) / 1000);
 	console.log('current_page: ' + current_page);
 	console.log('elapsed_time: ' + elapsed_time);
 	if (page_history_stats.hasOwnProperty(current_page)) {
@@ -74,9 +73,15 @@ chrome.runtime.onMessage.addListener(
 
 			chrome.tabs.onActivated.addListener(
 				recordPages
-			);
+            );
+            
+			chrome.tabs.onUpdated.addListener(
+                recordPages
+                // NOTE: we choose multiple triggers over filtering
+                // for changeInfo.status == 'complete'
+            );
 
-			seconds_remaining = 30;
+			seconds_remaining = 60;
 			counter = setInterval(countdown, 1000);
 			updateCurrentPage();
 			updateCurrentTime(); 
