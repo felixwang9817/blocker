@@ -11,9 +11,20 @@ function addBlockedSite(site){
 document.addEventListener('DOMContentLoaded', () => {
     let startBlockingButton = document.getElementById('start-blocking');
     let stopBlockingButton = document.getElementById('stop-blocking');
+    let submitWebsiteForm = document.getElementById('submitWebsite');
     let timer = document.getElementById('timer');
     let seconds_remaining = null;
     var countdown = null;
+
+    submitWebsiteForm.addEventListener('submit', function(event) {
+        let blocked_site = document.getElementById('blockedWebsite');
+        chrome.storage.local.get(['blocked_sites'], function(result) {
+            console.log("current blocked sites: " + result.blocked_sites);
+            result.blocked_sites.push(blocked_site.value);
+            console.log("updated blocked sites: " + result.blocked_sites);
+            chrome.storage.local.set({'blocked_sites': result});
+        });
+    });
 
     function update_timer() {
         timer.innerHTML = seconds_remaining;
