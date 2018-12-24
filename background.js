@@ -5,6 +5,15 @@ let current_page = null;
 let seconds_remaining = null;
 var counter = null;
 
+function format_url(urls){
+    let formatted_urls = []; 
+    for(let i=0; i<urls.length; i++){
+        formatted_urls.push("*://" + urls[i] + "/*"); 
+    }
+    console.log(formatted_urls); 
+    return formatted_urls; 
+}
+
 function block_websites() {
     return {cancel: true};
 }
@@ -65,11 +74,13 @@ function recordPages(){
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.task === 'start' && seconds_remaining === null) {
-            chrome.webRequest.onBeforeRequest.addListener(
-                block_websites,
-                {urls: ["*://www.google.com/*"]},
-                ["blocking"]
-            );
+            chrome.storage.local.get('blocked_sites', (obj) => {
+                chrome.webRequest.onBeforeRequest.addListener(
+                    block_websites,
+                    {urls: format_url(obj.blocked_sites)},
+                    ["blocking"]
+                );
+            });
 
 			chrome.tabs.onActivated.addListener(
 				recordPages
@@ -95,6 +106,15 @@ chrome.runtime.onMessage.addListener(
             sendResponse(
                 {'seconds_remaining': seconds_remaining}
             );
+        } else if (request.task === 'update_blocked_sites' && seconds_remaining !== null){
+            chrome.webRequest.onBeforeRequest.removeListener(block_websites);
+            chrome.storage.local.get('blocked_sites', (obj) => {
+                chrome.webRequest.onBeforeRequest.addListener(
+                    block_websites,
+                    {urls: format_url(obj.blocked_sites)},
+                    ["blocking"]
+                );
+            });
         }
     }
 );

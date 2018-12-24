@@ -20,9 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         (obj) => {
             let list = obj.blocked_sites; 
             for(let i =0; i<list.length; i++){
+                console.log(list[i]); 
                 addBlockedSite(list[i]); 
         }
     });
+    
 
     submitWebsiteForm.addEventListener('submit', function(event) {
         let blocked_site = document.getElementById('blockedWebsite');
@@ -30,7 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("current blocked sites: " + result.blocked_sites);
             result.blocked_sites.push(blocked_site.value);
             console.log("updated blocked sites: " + result.blocked_sites);
-            chrome.storage.local.set({'blocked_sites': result});
+            chrome.storage.local.set({'blocked_sites': result.blocked_sites});
+            chrome.runtime.sendMessage({'task': 'update_blocked_sites'}, function(response){
+
+            }); 
         });
     });
 
