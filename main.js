@@ -1,3 +1,13 @@
+function addBlockedSite(site){
+    let list = document.getElementsById('blocked-sites-list'); 
+    let cur_blocked_site = 
+        '<div class="blocked-site">' +  
+            site + 
+            '<button class="remove-site"><i class="fas fa-ban"></i></button>' + 
+        '</div>';
+    list.insertAdjacentHTML('beforeend', cur_blocked_site);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     let startBlockingButton = document.getElementById('start-blocking');
     let stopBlockingButton = document.getElementById('stop-blocking');
@@ -40,5 +50,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
 

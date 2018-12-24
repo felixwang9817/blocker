@@ -1,0 +1,13 @@
+#timer{
+    height: 50px;
+}
+body{
+    width:320px;
+}
+.remove-site { 
+    display: none;
+}
+
+.blocked-site:hover > .remove-site, .remove-site:hover {
+    display: inline-block;
+}
