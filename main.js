@@ -1,11 +1,15 @@
 function addBlockedSite(site){
     let list = document.getElementById('blocked-sites-list'); 
     let cur_blocked_site = 
-        '<div class="blocked-site">' +  
+        '<div class="blocked-site"' + ' id="' + site + '">' +  
             site + 
             '<button class="remove-site"><i class="fas fa-ban"></i></button>' + 
         '</div>';
     list.insertAdjacentHTML('beforeend', cur_blocked_site);
+}
+
+function removeBlockedSite(element){
+    console.log(element); 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,11 +24,28 @@ document.addEventListener('DOMContentLoaded', () => {
         (obj) => {
             let list = obj.blocked_sites; 
             for(let i =0; i<list.length; i++){
-                console.log(list[i]); 
                 addBlockedSite(list[i]); 
-        }
+            }
+            let removeBlockedButtons = document.getElementsByClassName('remove-site'); 
+            console.log("number blocked: " + removeBlockedButtons.length); 
+            for(let i=0; i<removeBlockedButtons.length; i++){
+                removeBlockedButtons[i].addEventListener('click', function(event){
+                    let curBlockedSiteDiv = event.currentTarget.parentNode;  
+                    curBlockedSiteDiv.parentNode.removeChild(curBlockedSiteDiv);
+                    chrome.storage.local.get(['blocked_sites'], (obj) => {
+                        let list = obj.blocked_sites; 
+                        list = list.filter((x) => {
+                            return x !== curBlockedSiteDiv.id; 
+                        }); 
+                        chrome.storage.local.set({'blocked_sites': list}, () => {
+                            console.log("Removed blocked site" + list); 
+                            chrome.runtime.sendMessage({'task': 'update_blocked_sites'}); 
+                        }); 
+                    }); 
+                });
+            }
     });
-    
+
 
     submitWebsiteForm.addEventListener('submit', function(event) {
         let blocked_site = document.getElementById('blockedWebsite');
@@ -73,5 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'task': 'stop'
         });
     });
+
+
 });
 
