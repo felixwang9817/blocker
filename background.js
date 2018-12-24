@@ -99,3 +99,15 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+chrome.runtime.onInstalled.addListener(
+    function() {
+        chrome.storage.local.set({'blocked_sites': ['www.youtube.com', 
+                                                    'www.netflix.com', 
+                                                    'www.reddit.com']},
+            function() {
+                console.log("set blocked sites successfully");
+            }
+        );
+    }
+);
+
