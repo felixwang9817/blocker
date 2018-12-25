@@ -3,6 +3,7 @@ let page_history_stats = {};
 let current_page_start_time = null; 
 let current_page = null; 
 let seconds_remaining = null;
+let is_started = false;
 var counter = null;
 
 function format_url(urls){
@@ -74,6 +75,7 @@ function recordPages(){
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.task === 'start' && seconds_remaining === null) {
+            is_started = true;
             chrome.storage.local.get('blocked_sites', (obj) => {
                 chrome.webRequest.onBeforeRequest.addListener(
                     block_websites,
@@ -116,6 +118,11 @@ chrome.runtime.onMessage.addListener(
                     ["blocking"]
                 );
             });
+        } else if (request.task == 'update_timer') {
+            sendResponse(
+                {'is_started': is_started,
+                 'seconds_remaining': seconds_remaining}
+            )
         }
     }
 );
