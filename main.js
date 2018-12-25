@@ -8,10 +8,6 @@ function addBlockedSite(site){
     list.insertAdjacentHTML('beforeend', cur_blocked_site);
 }
 
-function removeBlockedSite(element){
-    console.log(element); 
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     // TODO: remove this stop button
     let stopBlockingButton = document.getElementById('stop-blocking');
@@ -92,12 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }, function(response) {
         if (response.is_started) {
             console.log('already started, seconds left: ' + response.seconds_remaining);
-            update(response.seconds_remaining, wholeTime);
+            displayTimeLeft(response.seconds_remaining, wholeTime);
             timer(response.seconds_remaining);
+        } else {
+            displayTimeLeft(wholeTime);
         }
     });
-
-    displayTimeLeft(wholeTime);
 
     function timer (seconds){ //counts time, takes seconds
         let remainTime = Date.now() + (seconds * 1000);

@@ -94,7 +94,7 @@ chrome.runtime.onMessage.addListener(
                 // for changeInfo.status == 'complete'
             );
 
-            seconds_remaining = 30;
+            seconds_remaining = 60;
             // TODO: sync this from main.js
 			counter = setInterval(countdown, 1000);
 			updateCurrentPage();
