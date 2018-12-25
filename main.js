@@ -80,10 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //circle ends
     const displayOutput = document.querySelector('.display-remain-time')
     const startBtn = document.getElementById('pause');
-
+    
     let intervalTimer;
     let timeLeft;
-    let wholeTime = 7455; // manage this to set the whole time 
+    let wholeTime = 60; // manage this to set the whole time 
     let isStarted = false;
 
     // upon loading, update timer
@@ -96,6 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
             timer(response.seconds_remaining);
         }
     });
+
+    displayTimeLeft(wholeTime);
 
     function timer (seconds){ //counts time, takes seconds
         let remainTime = Date.now() + (seconds * 1000);
