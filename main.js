@@ -13,12 +13,7 @@ function removeBlockedSite(element){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    let startBlockingButton = document.getElementById('start-blocking');
-    let stopBlockingButton = document.getElementById('stop-blocking');
     let submitWebsiteForm = document.getElementById('submitWebsite');
-    let timer_display = document.getElementById('timer-display');
-    let seconds_remaining = null;
-    var countdown = null;
 
     chrome.storage.local.get(['blocked_sites'], 
         (obj) => {
@@ -57,41 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             chrome.runtime.sendMessage({'task': 'update_blocked_sites'}, function(response){
 
             }); 
-        });
-    });
-
-    function update_timer() {
-        timer_display.innerHTML = seconds_remaining;
-        console.log(seconds_remaining);
-        seconds_remaining -= 1;
-        if (seconds_remaining <= -1) {
-            clearInterval(countdown);
-        }
-    }
-
-    chrome.runtime.sendMessage({
-        'task': 'query_time'
-    }, function(response) {
-        seconds_remaining = response.seconds_remaining;
-        if (seconds_remaining != null) {
-            timer_display.innerHTML = seconds_remaining;
-            countdown = setInterval(update_timer, 1000);
-            seconds_remaining = response.seconds_remaining;
-        }
-    }); 
-
-    startBlockingButton.addEventListener('click', function(){
-        chrome.runtime.sendMessage({
-            'task': 'start'
-        }, function (response) {
-            seconds_remaining = response.seconds_remaining;
-            countdown = setInterval(update_timer, 1000);
-        });
-    });
-
-    stopBlockingButton.addEventListener('click', function(){
-        chrome.runtime.sendMessage({
-            'task': 'stop'
         });
     });
 
@@ -174,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             displayTimeLeft(timeLeft);
         }, 1000);
     }
+
     function pauseTimer(event){
         if(isStarted === false){
             timer(wholeTime);
@@ -207,6 +168,21 @@ document.addEventListener('DOMContentLoaded', () => {
         update(timeLeft, wholeTime);
     }
 
-    pauseBtn.addEventListener('click',pauseTimer);
+    pauseBtn.addEventListener('click', function(){
+        console.log(isStarted);
+        console.log(isPaused);
+        if (!isStarted || (isStarted && isPaused)) {
+            console.log('starting');
+            chrome.runtime.sendMessage({
+                'task': 'start'
+            });
+        } else {
+            console.log('stopping');
+            chrome.runtime.sendMessage({
+                'task': 'stop'
+            });
+        }
+    });
+    pauseBtn.addEventListener('click', pauseTimer);
 });
 
