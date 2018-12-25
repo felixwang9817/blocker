@@ -105,10 +105,6 @@ chrome.runtime.onMessage.addListener(
             );
         } else if (request.task === 'stop') {
             chrome.webRequest.onBeforeRequest.removeListener(block_websites);
-        } else if (request.task === 'query_time') {
-            sendResponse(
-                {'seconds_remaining': seconds_remaining}
-            );
         } else if (request.task === 'update_blocked_sites' && seconds_remaining !== null){
             chrome.webRequest.onBeforeRequest.removeListener(block_websites);
             chrome.storage.local.get('blocked_sites', (obj) => {

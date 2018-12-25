@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //circle ends
     const displayOutput = document.querySelector('.display-remain-time')
-    const pauseBtn = document.getElementById('pause');
+    const startBtn = document.getElementById('pause');
 
     let intervalTimer;
     let timeLeft;
@@ -107,25 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(intervalTimer);
                 isStarted = false;
                 displayTimeLeft(wholeTime);
-                pauseBtn.classList.remove('pause');
-                pauseBtn.classList.add('play');
                 return ;
             }
             displayTimeLeft(timeLeft);
         }, 1000);
-    }
-
-    function startTimer(event){
-        chrome.runtime.sendMessage({
-            'task': 'query_time'
-        }, function(response) {
-            timeLeft = response.seconds_remaining;
-            console.log('timeLeft: ' + timeLeft);
-        })
-        timer(wholeTime);
-        isStarted = true;
-        this.classList.remove('play');
-        this.classList.add('pause');
     }
 
     function displayTimeLeft (timeLeft){ //displays time on the input
@@ -136,14 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
         update(timeLeft, wholeTime);
     }
 
-    pauseBtn.addEventListener('click', function(){
+    startBtn.addEventListener('click', function(){
         if (!isStarted) {
-            console.log('starting');
+            isStarted = true;
             chrome.runtime.sendMessage({
                 'task': 'start'
             });
+            timer(wholeTime);
         }
     });
-    pauseBtn.addEventListener('click', startTimer);
 });
 
