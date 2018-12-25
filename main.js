@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let startBlockingButton = document.getElementById('start-blocking');
     let stopBlockingButton = document.getElementById('stop-blocking');
     let submitWebsiteForm = document.getElementById('submitWebsite');
-    let timer_display = document.getElementById('timer-display');
     let seconds_remaining = null;
     var countdown = null;
 
@@ -60,21 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function update_timer() {
-        timer_display.innerHTML = seconds_remaining;
-        console.log(seconds_remaining);
-        seconds_remaining -= 1;
-        if (seconds_remaining <= -1) {
-            clearInterval(countdown);
-        }
-    }
 
     chrome.runtime.sendMessage({
         'task': 'query_time'
     }, function(response) {
         seconds_remaining = response.seconds_remaining;
         if (seconds_remaining != null) {
-            timer_display.innerHTML = seconds_remaining;
+            //TODO: Incorporate new timer 
+            //here 
             countdown = setInterval(update_timer, 1000);
             seconds_remaining = response.seconds_remaining;
         }
@@ -117,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let intervalTimer;
     let timeLeft;
-    let wholeTime = 0.5 * 60; // manage this to set the whole time 
+    let wholeTime = 7455; // manage this to set the whole time 
     let isPaused = false;
     let isStarted = false;
 
@@ -130,27 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
             wholeTime += seconds;
             update(wholeTime,wholeTime);
         }
-    }
-
-    for (var i = 0; i < setterBtns.length; i++) {
-        setterBtns[i].addEventListener("click", function(event) {
-            var param = this.dataset.setter;
-            switch (param) {
-                case 'minutes-plus':
-                    changeWholeTime(1 * 60);
-                    break;
-                case 'minutes-minus':
-                    changeWholeTime(-1 * 60);
-                    break;
-                case 'seconds-plus':
-                    changeWholeTime(1);
-                    break;
-                case 'seconds-minus':
-                    changeWholeTime(-1);
-                    break;
-            }
-        displayTimeLeft(wholeTime);
-        });
     }
 
     function timer (seconds){ //counts time, takes seconds
@@ -200,9 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayTimeLeft (timeLeft){ //displays time on the input
-        let minutes = Math.floor(timeLeft / 60);
+        let hours = Math.floor(timeLeft / 3600); 
+        let minutes = Math.floor((timeLeft / 60) % 60);
         let seconds = timeLeft % 60;
-        let displayString = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        if(minutes === 0) {
+            var displayString = `${seconds < 10 ? '0' : ''}${seconds}`;
+        }else if(hours === 0){
+            var displayString =  `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }else{
+            var displayString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
         displayOutput.textContent = displayString;
         update(timeLeft, wholeTime);
     }
