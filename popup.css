@@ -47,18 +47,30 @@ button[data-setter]:hover { opacity: 0.5; }
 }
   
 .seconds-set { float: right; }
+
+.circle {
+}
+
+.circle-figure{
+    position: relative;
+    text-align: center;
+    height: 350px; 
+}
   
-.controlls {
+.controls {
     position: absolute;
-    left: 75px;
-    top: 105px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    vertical-align: middle;
     text-align: center;
 }
   
 .display-remain-time {
+    position: relative;
     font-family: 'Roboto';
     font-weight: 100;
-    font-size: 65px;
+    font-size: 35px;
     color: #F7958E;
 }
   
@@ -95,6 +107,14 @@ button[data-setter]:hover { opacity: 0.5; }
     border: 5px solid #F7958E;
     border-top: none;
     border-bottom: none;
+}
+
+svg{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
 }
   
 #pause:hover { opacity: 0.8; }

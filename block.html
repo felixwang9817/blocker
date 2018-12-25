@@ -22,21 +22,23 @@
     <div class="tab-content">
       <div class="tab-pane active" id="timer" role="tabpanel" aria-labelledby="timer-tab">
         <div class="circle">
-          <svg width="300" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-            <g transform="translate(110,110)">
-              <circle r="100" class="e-c-base"/>
-              <g transform="rotate(-90)">
-                <circle r="100" class="e-c-progress"/>
-                <g id="e-pointer">
-                  <circle cx="100" cy="0" r="8" class="e-c-pointer"/>
+          <div class="circle-figure">
+            <svg width="300" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" >
+              <g transform="translate(110,110)">
+                <circle r="100" class="e-c-base"/>
+                <g transform="rotate(-90)">
+                  <circle r="100" class="e-c-progress"/>
+                  <g id="e-pointer">
+                    <circle cx="100" cy="0" r="8" class="e-c-pointer"/>
+                  </g>
                 </g>
               </g>
-            </g>
-          </svg>
-        </div>
-        <div class="controlls">
-          <div class="display-remain-time">00:30</div>
-          <button class="play" id="pause"></button>
+            </svg>
+            <div class="controls">
+              <div class="display-remain-time">0</div>
+              <button class="play" id="pause"></button>
+            </div>
+          </div>
         </div>
         <button id="stop-blocking" class="btn btn-danger">Stop <i class="fas fa-stop"></i></button>
       </div> 

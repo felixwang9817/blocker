@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let intervalTimer;
     let timeLeft;
-    let wholeTime = 0.5 * 60; // manage this to set the whole time 
+    let wholeTime = 7455; // manage this to set the whole time 
     let isStarted = false;
 
     // upon loading, update timer
@@ -114,9 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayTimeLeft (timeLeft){ //displays time on the input
-        let minutes = Math.floor(timeLeft / 60);
+        let hours = Math.floor(timeLeft / 3600); 
+        let minutes = Math.floor((timeLeft / 60) % 60);
         let seconds = timeLeft % 60;
-        let displayString = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        if(minutes === 0) {
+            var displayString = `${seconds < 10 ? '0' : ''}${seconds}`;
+        }else if(hours === 0){
+            var displayString =  `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }else{
+            var displayString = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
         displayOutput.textContent = displayString;
         update(timeLeft, wholeTime);
     }
